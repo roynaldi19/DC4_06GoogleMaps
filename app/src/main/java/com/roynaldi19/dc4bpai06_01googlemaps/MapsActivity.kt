@@ -73,9 +73,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val ats = LatLng(-6.240060, 106.853378)
+        map.addMarker(MarkerOptions().position(ats).title("Marker in PT. ATS").snippet("Tebet timur III No. 34"))
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(ats, 15f))
+        //map.moveCamera(CameraUpdateFactory.newLatLng(ats))
+
         map.uiSettings.isZoomControlsEnabled = true
         map.uiSettings.isIndoorLevelPickerEnabled = true
         map.uiSettings.isCompassEnabled = true
