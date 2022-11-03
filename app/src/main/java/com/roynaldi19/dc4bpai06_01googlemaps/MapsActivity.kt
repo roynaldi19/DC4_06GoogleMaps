@@ -73,7 +73,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         // Add a marker in Sydney and move the camera
-        val ats = LatLng(-6.240060, 106.853378)
+        val ats = LatLng(-6.23806, 106.85579)
         map.addMarker(MarkerOptions().position(ats).title("Marker in PT. ATS").snippet("Tebet timur III No. 34"))
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(ats, 15f))
         //map.moveCamera(CameraUpdateFactory.newLatLng(ats))
