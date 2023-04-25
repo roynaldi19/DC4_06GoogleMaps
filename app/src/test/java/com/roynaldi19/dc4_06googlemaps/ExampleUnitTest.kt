@@ -1,4 +1,4 @@
-package com.roynaldi19.dc4bpai06_01googlemaps
+package com.roynaldi19.dc4_06googlemaps
 
 import org.junit.Test
 
