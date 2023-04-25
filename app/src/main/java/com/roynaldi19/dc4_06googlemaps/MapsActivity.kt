@@ -1,35 +1,20 @@
 package com.roynaldi19.dc4_06googlemaps
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.roynaldi19.dc4_06googlemaps.databinding.ActivityMapsBinding
-import java.io.IOException
-import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,13 +29,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        map = googleMap
 
-        mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.uiSettings.isIndoorLevelPickerEnabled = true
-        mMap.uiSettings.isCompassEnabled = true
-        mMap.uiSettings.isMapToolbarEnabled = true
+        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isIndoorLevelPickerEnabled = true
+        map.uiSettings.isCompassEnabled = true
+        map.uiSettings.isMapToolbarEnabled = true
 
+        val kiddSpace = LatLng(0.42435, 101.43974)
+        map.addMarker(
+            MarkerOptions().position(kiddSpace).title("Kidd Space").snippet("Gg. Ikhlas II No. 91")
+        )
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(kiddSpace, 15f))
 
     }
 
@@ -62,26 +52,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.normal_type -> {
-                mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+                map.mapType = GoogleMap.MAP_TYPE_NORMAL
                 true
             }
+
             R.id.satellite_type -> {
-                mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                map.mapType = GoogleMap.MAP_TYPE_SATELLITE
                 true
             }
+
             R.id.terrain_type -> {
-                mMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                map.mapType = GoogleMap.MAP_TYPE_TERRAIN
                 true
             }
+
             R.id.hybrid_type -> {
-                mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+                map.mapType = GoogleMap.MAP_TYPE_HYBRID
                 true
             }
+
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
     }
-
 
 }
