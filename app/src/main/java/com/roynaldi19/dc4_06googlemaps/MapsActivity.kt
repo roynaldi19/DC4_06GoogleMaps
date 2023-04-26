@@ -25,15 +25,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.tabs.TabLayout.TabGravity
 import com.roynaldi19.dc4_06googlemaps.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private val boundsBuilder = LatLngBounds.Builder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +55,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.uiSettings.isCompassEnabled = true
         map.uiSettings.isMapToolbarEnabled = true
 
-        val kiddSpace = LatLng(0.42435, 101.43974)
+//        val kiddSpace = LatLng(0.42435, 101.43974)
+//        map.addMarker(
+//            MarkerOptions().position(kiddSpace).title("Kidd Space").snippet("Gg. Ikhlas II No. 91")
+//
+//        )
+
+        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
         map.addMarker(
-            MarkerOptions().position(kiddSpace).title("Kidd Space").snippet("Gg. Ikhlas II No. 91")
+            MarkerOptions()
+                .position(dicodingSpace).title("Dicoding Space").snippet("Batik Kumeli No.50")
         )
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(kiddSpace, 15f))
+
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
 
         map.setOnMapLongClickListener { latLng ->
             map.addMarker(
@@ -70,6 +79,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         getMyLocation()
         setMapStyle()
+        addManyMarker()
 
     }
 
@@ -148,12 +158,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setMapStyle() {
         try {
-            val success = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            val success =
+                map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
             if (!success) {
                 Log.e(TAG, "style parsing failed.")
             }
         } catch (exception: Resources.NotFoundException) {
             Log.e(TAG, "Cannot find style. Error: ", exception)
+        }
+    }
+
+    private fun addManyMarker() {
+        val tourismPlace = listOf(
+            TourismPlace("Floating Market Lembang", -6.8168954,107.6151046),
+            TourismPlace("The Great Asia Africa", -6.8331128,107.6048483),
+            TourismPlace("Rabbit Town", -6.8668408,107.608081),
+            TourismPlace("Alun-Alun Kota Bandung", -6.9218518,107.6025294),
+            TourismPlace("Orchid Forest Cikole", -6.780725, 107.637409),
+        )
+        tourismPlace.forEach{ tourism ->
+            val latLng = LatLng(tourism.latitude, tourism.longitude)
+            map.addMarker(MarkerOptions().position(latLng).title(tourism.name))
         }
     }
 
