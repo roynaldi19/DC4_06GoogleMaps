@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -29,6 +30,8 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.roynaldi19.dc4_06googlemaps.databinding.ActivityMapsBinding
+import java.io.IOException
+import java.util.Locale
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -178,7 +181,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         )
         tourismPlace.forEach { tourism ->
             val latLng = LatLng(tourism.latitude, tourism.longitude)
-            map.addMarker(MarkerOptions().position(latLng).title(tourism.name))
+            val addressName = getAddressName(tourism.latitude, tourism.longitude)
+            map.addMarker(MarkerOptions().position(latLng).title(tourism.name).snippet(addressName))
             boundsBuilder.include(latLng)
 
             val bounds: LatLngBounds = boundsBuilder.build()
@@ -191,6 +195,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             )
         }
+    }
+
+    private fun getAddressName(lat: Double, long:Double): String? {
+        var addressName: String? = null
+        val geoCoder = Geocoder(this@MapsActivity, Locale.getDefault())
+        try {
+            val list = geoCoder.getFromLocation(lat, long, 1)
+            if (list != null && list.size != 0) {
+                addressName = list[0].getAddressLine(0)
+                Log.d(TAG, "getAddressName: $addressName")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return addressName
     }
 
 }
